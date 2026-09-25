@@ -25,4 +25,4 @@ Next.js 16, React, Cloudflare Workers, Markdown content, Google Analytics 4 with
 
 ## About this repository
 
-The files here are the site's early static prototype (August 2026), kept as a record of where the design started. They are not published anywhere: the live, production site is **[www.digiblu.com](https://www.digiblu.com)**.
+This repository holds the project write-up. The live, production site is **[www.digiblu.com](https://www.digiblu.com)**.
