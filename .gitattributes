@@ -1,0 +1,10 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# GitHub language statistics (Linguist): generated and vendored files stay
+# out of the language count so the repository reads as TypeScript.
+app/globals.css linguist-generated
+content/lattice.json linguist-generated
+public/** linguist-vendored
+docs/** linguist-documentation
+*.md linguist-documentation

@@ -25,4 +25,26 @@ Next.js 16, React, Cloudflare Workers, Markdown content, Google Analytics 4 with
 
 ## About this repository
 
-This repository holds the project write-up. The live, production site is **[www.digiblu.com](https://www.digiblu.com)**.
+This is the site's source code as released in v2.6.2 (September 2026), shared as part of my portfolio. The live, production site is **[www.digiblu.com](https://www.digiblu.com)**, deployed from DigiBlu's own repository, so this copy is not updated automatically. DigiBlu's deployment pipeline and internal working notes are not included.
+
+| Folder | Holds |
+|---|---|
+| `app/` | The pages and the contact form's API; `globals.css` is the stylesheet |
+| `components/` | The page sections, and the scripts behind the animations and interactions |
+| `content/` | All the copy, as Markdown: case studies, services, team, accreditations, legal documents |
+| `lib/` | Content loading, the contact form's checks and email, cookie consent and analytics |
+| `public/assets/` | Images, logos, the font and the share cards |
+| `scripts/` | The content build and the tests |
+| `BRAND.md` | The brand and design-system guide |
+
+## Running it locally
+
+Needs Node 24 and pnpm.
+
+```bash
+pnpm install
+pnpm dev     # http://localhost:3000
+pnpm test    # content and contact-form tests
+```
+
+The contact form needs its keys to send (see `.env.example`); everything else runs without them.

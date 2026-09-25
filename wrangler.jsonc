@@ -1,0 +1,57 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "digiblu-website",
+  // Runtime vars/secrets are managed in the Cloudflare dashboard, not here, so
+  // a deploy must not treat this file as the source of truth and delete them.
+  // Secrets are never deleted; this protects plain vars (CONTACT_FORM_*).
+  "keep_vars": true,
+  "observability": {
+    "enabled": true,
+    "logs": {
+      "enabled": true,
+      "invocation_logs": true
+    },
+  },
+  // account_id is injected by Cloudflare Workers Builds (CLOUDFLARE_ACCOUNT_ID).
+  // For a deploy from this machine, uncomment and set it, or export the env var.
+  // "account_id": "",
+  "compatibility_date": "2026-09-01",
+  "compatibility_flags": ["nodejs_compat"],
+  // vinext's Worker entry (not a file path - Vite resolves the package export)
+  // and the client bundle it builds. not_found_handling "none" so unknown URLs
+  // reach the Worker (the 404 page and /api/contact) instead of the asset server.
+  "main": "vinext/server/fetch-handler",
+  "assets": { "directory": "dist/client", "not_found_handling": "none", "binding": "ASSETS" },
+  // The Workers cache and the bindings the vinext cache adapters in
+  // vite.config.ts read (kvDataAdapter -> VINEXT_KV_CACHE, cdnAdapter ->
+  // CF_VERSION_METADATA). Image optimisation is off: the site uses plain <img>
+  // and next.config.ts sets images.unoptimized, so there is no IMAGES binding.
+  //
+  // Environment (11 Sep 2026, ACS added 14 Sep 2026): NEXT_PUBLIC_* values
+  // (the GA measurement id, the Turnstile site key, robots) are build
+  // variables, inlined at build time. The values /api/contact reads at
+  // request time are Worker secrets: TURNSTILE_SECRET_KEY and
+  // AZURE_COMMUNICATION_SERVICES_CONNECTION_STRING via
+  // `wrangler secret put <NAME>`, and CONTACT_FORM_SENDER_EMAIL_ADDRESS and
+  // CONTACT_FORM_RECIPIENT_EMAIL_ADDRESS (plain vars are fine), or the
+  // dashboard's Settings > Variables and Secrets. Never "vars" entries here.
+  "cache": { "enabled": true },
+  "version_metadata": { "binding": "CF_VERSION_METADATA" },
+  "kv_namespaces": [{ "binding": "VINEXT_KV_CACHE", "id": "d074a2179bd3434e90fde5f17b5093a3" }],
+  // Worker Previews (branch previews shown in the Cloudflare dashboard). At
+  // runtime the preview runs the Worker's production code, but only the
+  // bindings named here, so a preview never touches production state unless
+  // the same resource is named. `assets`, `compatibility_*` and `observability`
+  // stay at the top level and are inherited/uploaded per branch.
+  "previews": {
+    "version_metadata": { "binding": "CF_VERSION_METADATA" },
+    "kv_namespaces": [{ "binding": "VINEXT_KV_CACHE", "id": "d074a2179bd3434e90fde5f17b5093a3" }],
+    // Preview telemetry is configured independently from production so a
+    // preview's logs and traces show under its own Observability tab.
+    "observability": {
+      "enabled": true,
+      "logs": { "enabled": true, "invocation_logs": true, "persist": true },
+      "traces": { "enabled": true, "head_sampling_rate": 1, "persist": true }
+    }
+  }
+}

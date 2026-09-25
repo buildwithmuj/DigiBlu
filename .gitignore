@@ -1,0 +1,39 @@
+# OS cruft
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Local scratch/output some tools may create
+*.tmp
+*.log
+
+# Next.js / vinext
+.next/
+out/
+next-env.d.ts
+.wrangler/
+
+# generated from content/**/*.md at build time (pnpm content)
+content/.generated/
+
+# Environment files with real values (the example is committed)
+.env
+.env.local
+.env.*.local
+.dev.vars
+
+# TypeScript incremental build cache (npx tsc --noEmit writes it)
+*.tsbuildinfo
+/dist/
+.vinext/
+
+.env.*
+!.env.example
